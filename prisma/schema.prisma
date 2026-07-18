@@ -17,7 +17,7 @@ datasource db {
 /// A company you've applied to. Holds reusable info.
 model Company {
   id           String        @id @default(cuid())
-  name         String
+  name         String        @unique
   website      String?
   location     String?
   notes        String?
