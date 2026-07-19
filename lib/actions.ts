@@ -89,3 +89,24 @@ export async function createApplication(prevState: State, formData: FormData){
     redirect('/applications')
 }
 
+const InterviewSchema = z.object({
+    type: z.enum([
+        "RECRUITER_SCREEN",
+        "PHONE_SCREEN",
+        "TECHNICAL",
+        "SYSTEM_DESIGN",
+        "BEHAVIORAL",
+        "ONSITE",
+        "FINAL",
+    ]),
+    scheduledAt: z.string().min(1),
+    durationMins: z.int().optional(),
+    round: z.int().optional(),
+    location: z.string().optional(),
+    interviewer: z.string().optional(),
+    notes: z.string().optional(),
+})
+
+export async function createInterview(prevState: State, formData: FormData) {
+    
+}
