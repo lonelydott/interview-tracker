@@ -1,5 +1,7 @@
 import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
+import AddInterviewForm from './add-interview-form';
+import AddOAForm from './add-oa-form';
 
 function formatDateTime(date: Date | null) {
     if (!date) {
@@ -67,6 +69,9 @@ export default async function ApplicationDetailPage({
                         ))}
                     </ul>
                 )}
+
+                {/* Render Interview form */}
+                <AddInterviewForm applicationId={app.id} />
             </section>
 
             <section>
@@ -82,6 +87,9 @@ export default async function ApplicationDetailPage({
                         ))}
                     </ul>
                 )}
+
+                {/* Render OAs */}
+                <AddOAForm applicationId={app.id} />
             </section>
 
             <section>
@@ -97,6 +105,10 @@ export default async function ApplicationDetailPage({
                         ))}
                     </ul>
                 )}
+
+                {/* Render Rec Calls */}
+                
+
             </section>
 
             <section>
@@ -112,6 +124,9 @@ export default async function ApplicationDetailPage({
                         ))}
                     </ul>
                 )}
+
+                {/* Render Follow Ups */}
+
             </section>
         </div>
     );
