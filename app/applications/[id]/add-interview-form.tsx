@@ -14,7 +14,7 @@ export default function AddInterviewForm({ applicationId } : { applicationId : s
             
             <div>
                 <label htmlFor="type">Type</label>
-                <select id="type" name="type" defaultValue={applicationId}>
+                <select id="type" name="type" defaultValue="TECHNICAL">
                     <option value="RECRUITER_SCREEN">Recruiter Screen</option>
                     <option value="PHONE_SCREEN">Phone Screen</option>
                     <option value="TECHNICAL">Technical</option>
@@ -41,8 +41,8 @@ export default function AddInterviewForm({ applicationId } : { applicationId : s
             </div>
 
             <div>
-                <label htmlFor="round">Location</label>
-                <input id="round" name="round" type="text" />
+                <label htmlFor="location">Location</label>
+                <input id="location" name="location" type="text" />
             </div>
 
             <div>
@@ -56,7 +56,7 @@ export default function AddInterviewForm({ applicationId } : { applicationId : s
             </div>
 
             <div>
-                <button type="submit">Add Interviwe</button>
+                <button type="submit">Add Interview</button>
             </div>
 
             {state.message && <p>{state.message}</p>}

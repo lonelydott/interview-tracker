@@ -89,6 +89,35 @@ export async function createApplication(prevState: State, formData: FormData){
     redirect('/applications')
 }
 
+export async function updateApplicationStatus(id: string, formData: FormData) {
+    const parsed = z.enum([
+        "WISHLIST", 
+        "APPLIED", 
+        "OA", 
+        "INTERVIEWING",
+        "OFFER", 
+        "REJECTED", 
+        "WITHDRAWN", 
+        "GHOSTED",
+    ]).safeParse(formData.get('status'));
+
+    if (!parsed.success) return;
+
+    await prisma.application.update({
+        where: { id },
+        data: { status: parsed.data },
+    });
+
+    revalidatePath('/applications/' + id);
+    revalidatePath('/applications');
+}
+
+export async function deleteApplication(id: string, formData: FormData) {
+    await prisma.application.delete({ where: {id} });
+    revalidatePath('/applications');
+    redirect('/applications');
+}
+
 const InterviewSchema = z.object({
     type: z.enum([
         "RECRUITER_SCREEN",
@@ -173,6 +202,26 @@ export async function createInterview(prevState: InterviewState, formData: FormD
     return { message: 'Interview added', }
 }
 
+
+
+export async function updateInterviewStatus(id: string, applicationId: string, formData: FormData) {
+    const parsed = z.enum(["UPCOMING", "COMPLETED", "MISSED", "CANCELED"]).safeParse(formData.get('status'));
+    if (!parsed.success) return;
+
+    await prisma.interview.update({
+        where: { id },
+        data: { status: parsed.data },
+    });
+
+    revalidatePath('/applications/' + applicationId);
+
+}
+
+export async function deleteInterview(id: string, applicationId: string, formData: FormData) {
+    await prisma.interview.delete({where: {id}});
+    revalidatePath('/applications/' + applicationId);
+}
+
 const OASchema = z.object({
     dueAt: z.string().min(1),
     platform: z.string().optional(),
@@ -238,6 +287,25 @@ export async function createOA(prevState: OAState, formData: FormData){
     revalidatePath('/applications/' + applicationId)
     return { message: 'OA added', }
 }
+
+export async function updateOAStatus(id: string, applicationId: string, formData: FormData) {
+    const parsed = z.enum(["UPCOMING", "COMPLETED", "MISSED", "CANCELED"]).safeParse(formData.get('status'));
+    if (!parsed.success) return;
+
+    await prisma.onlineAssessment.update({
+        where: { id },
+        data: { status: parsed.data },
+    });
+    
+    revalidatePath('/applications/' + applicationId);
+
+}
+
+export async function deleteOA(id: string, applicationId: string, formData: FormData) {
+    await prisma.onlineAssessment.delete({where: {id}});
+    revalidatePath('/applications/' + applicationId);
+}
+
 
 // regex is pretty permissive will assume that users will put a well formed phone number
 // could allow some non-phone strings but it should be fine, user's loss anyways
@@ -308,4 +376,101 @@ export async function createRCall(prevState: RCallState, formData: FormData){
     }
     revalidatePath('/applications/' + applicationId)
     return { message: 'Recruiter Call added', }
+}
+
+
+export async function updateRCStatus(id: string, applicationId: string, formData: FormData) {
+    const parsed = z.enum(["UPCOMING", "COMPLETED", "MISSED", "CANCELED"]).safeParse(formData.get('status'));
+    if (!parsed.success) return;
+
+    await prisma.recruiterCall.update({
+        where: { id },
+        data: { status: parsed.data },
+    });
+    
+    revalidatePath('/applications/' + applicationId);
+
+}
+
+export async function deleteRC(id: string, applicationId: string, formData: FormData) {
+    await prisma.recruiterCall.delete({where: {id}});
+    revalidatePath('/applications/' + applicationId);
+}
+
+const FollowUpSchema = z.object({
+    title: z.string().min(1),
+    dueAt: z.string().min(1),
+    priority: z.enum(["HIGH", "MEDIUM", "LOW"]),
+    notes: z.string().optional(),
+    applicationId: z.string().min(1),
+})
+
+export type FollowUpState = {
+    errors?: {
+        title?: string[];
+        dueAt?: string[];
+        priority?: string[];
+        notes?: string[];
+        applicationId?: string[];
+    };
+    message?: string | null;
+}
+
+export async function createFollowUp(prevState: FollowUpState, formData: FormData){
+    const validatedFields = FollowUpSchema.safeParse({
+        title: formData.get('title'),
+        dueAt: formData.get('dueAt'),
+        priority: formData.get('priority'),
+        notes: formData.get('notes'),
+        applicationId: formData.get('applicationId'),
+    })
+
+    if (!validatedFields.success) {
+        return {
+            errors: z.flattenError(validatedFields.error).fieldErrors,
+            message: 'Missing Fields.',
+        }
+    }
+
+    const {
+        title,
+        dueAt,
+        priority,
+        notes,
+        applicationId,
+    } = validatedFields.data;
+
+    try{
+        const newFollowUp = await prisma.followUp.create({
+            data: {
+                title: title,
+                dueAt: new Date(dueAt),
+                priority: priority,
+                notes: notes || null,
+                application: { connect: {id: applicationId}},
+            }
+        })
+    } catch(error) { 
+        return { message: 'Database Error: Failed to Create Follow Up', }
+    }
+    revalidatePath('/applications/' + applicationId)
+    return { message: 'Follow Up added', }
+}
+
+export async function updateFollowUpStatus(id: string, applicationId: string, formData: FormData) {
+    const parsed = z.enum(["UPCOMING", "COMPLETED", "MISSED", "CANCELED"]).safeParse(formData.get('status'));
+    if (!parsed.success) return;
+
+    await prisma.followUp.update({
+        where: { id },
+        data: { status: parsed.data },
+    });
+    
+    revalidatePath('/applications/' + applicationId);
+
+}
+
+export async function deleteFollowUp(id: string, applicationId: string, formData: FormData) {
+    await prisma.followUp.delete({where: {id}});
+    revalidatePath('/applications/' + applicationId);
 }

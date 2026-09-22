@@ -50,8 +50,12 @@ export default function AddRcallForm({applicationId}: {applicationId: string}) {
             </div>
 
             <div>
-                <button type="submit">Add Online Assessment</button>
+                <button type="submit">Add Recruiter Call</button>
             </div>            
+
+            {state.message && <p>{state.message}</p>}
+
         </form>
+
     )
 }

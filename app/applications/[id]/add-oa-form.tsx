@@ -14,7 +14,7 @@ export default function AddOAForm({applicationId} : {applicationId : string}) {
             
             <div>
                 <label htmlFor="dueAt">Due At</label>
-                <input id="dueAt" name="dueAt" type="datetime-local" />
+                <input id="dueAt" name="dueAt" type="datetime-local" required/>
             </div>
 
             <div>
@@ -40,6 +40,9 @@ export default function AddOAForm({applicationId} : {applicationId : string}) {
             <div>
                 <button type="submit">Add Online Assessment</button>
             </div>
+
+            {state.message && <p>{state.message}</p>}
+
         </form>
     )
 }
