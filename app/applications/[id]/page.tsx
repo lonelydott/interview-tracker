@@ -6,20 +6,7 @@ import AddRcallForm from './add-rec-call-form';
 import AddFollowUpForm from './add-follow-up-form';
 import { updateInterviewStatus, updateOAStatus, updateRCStatus, updateFollowUpStatus, updateApplicationStatus, deleteApplication } from '@/lib/actions';
 import { deleteInterview, deleteOA, deleteRC, deleteFollowUp } from '@/lib/actions';
-import { buildTimeline } from '@/lib/timeline';
-function formatDateTime(date: Date | null) {
-    if (!date) {
-        return '---';
-    }
-    return new Date(date).toLocaleString(undefined, {
-        dateStyle: 'medium',
-        timeStyle: 'short'
-    });
-}
-
-function checkOverdue(date: Date | null, status: string) {
-    return date && status === 'UPCOMING' && date < new Date();
-}
+import { buildTimeline, formatDateTime, checkOverdue } from '@/lib/timeline';
 export default async function ApplicationDetailPage({
     params,
 }: {
