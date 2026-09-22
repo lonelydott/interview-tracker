@@ -13,11 +13,13 @@ export default function CreateForm() {
             <div>
                 <label htmlFor="role">Role</label>
                 <input id="role" name="role" type="text" required />
+                {state.errors?.role && <p>{state.errors.role[0]}</p>}
             </div>
             
             <div>
                 <label htmlFor="companyName">Company Name</label>
                 <input id="companyName" name="companyName" type="text" required />
+                {state.errors?.companyName && <p>{state.errors.companyName[0]}</p>}
             </div>
 
             <div>
@@ -27,26 +29,31 @@ export default function CreateForm() {
                     <option value="INTERVIEWING">INTERVIEWING</option>
                     <option value="OA">OA</option>
                 </select>
+                {state.errors?.status && <p>{state.errors.status[0]}</p>}
             </div>
 
             <div>
                 <label htmlFor="source">Source</label>
                 <input id="source" name="source" type="text" />
+                {state.errors?.source && <p>{state.errors.source[0]}</p>}
             </div>
 
             <div>
                 <label htmlFor="jobPostUrl">Job Post URL</label>
                 <input id="jobPostUrl" name="jobPostUrl" type="url" />
+                {state.errors?.jobPostUrl && <p>{state.errors.jobPostUrl[0]}</p>}
             </div>
 
             <div>
                 <label htmlFor="appliedAt">Applied On</label>
                 <input id="appliedAt" name="appliedAt" type="date" />
+                {state.errors?.appliedAt && <p>{state.errors.appliedAt[0]}</p>}
             </div>
 
             <div>
                 <label htmlFor="notes">Notes</label>
                 <textarea id="notes" name="notes" />
+                {state.errors?.notes && <p>{state.errors.notes[0]}</p>}
             </div>
 
             <div>

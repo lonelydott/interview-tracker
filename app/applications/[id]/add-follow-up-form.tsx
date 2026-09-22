@@ -15,11 +15,13 @@ export default function AddFollowUpForm({applicationId} : {applicationId: string
             <div>
                 <label htmlFor="title">Title</label>
                 <input id="title" name="title" type="text" required/>
+                {state.errors?.title && <p>{state.errors.title[0]}</p>}
             </div>
 
             <div>
                 <label htmlFor="dueAt">Due At</label>
                 <input id="dueAt" name="dueAt" type="datetime-local" required/>
+                {state.errors?.dueAt && <p>{state.errors.dueAt[0]}</p>}
             </div>
 
             <div>
@@ -29,11 +31,13 @@ export default function AddFollowUpForm({applicationId} : {applicationId: string
                     <option value="MEDIUM">Medium</option>
                     <option value="LOW">Low</option>
                 </select>
+                {state.errors?.priority && <p>{state.errors.priority[0]}</p>}
             </div>
 
             <div>
                 <label htmlFor="notes">Notes</label>
                 <textarea id="notes" name="notes" />
+                {state.errors?.notes && <p>{state.errors.notes[0]}</p>}
             </div>
 
             <div>

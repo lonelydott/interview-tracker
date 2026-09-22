@@ -6,6 +6,7 @@ import AddRcallForm from './add-rec-call-form';
 import AddFollowUpForm from './add-follow-up-form';
 import { updateInterviewStatus, updateOAStatus, updateRCStatus, updateFollowUpStatus, updateApplicationStatus, deleteApplication } from '@/lib/actions';
 import { deleteInterview, deleteOA, deleteRC, deleteFollowUp } from '@/lib/actions';
+import { buildTimeline } from '@/lib/timeline';
 function formatDateTime(date: Date | null) {
     if (!date) {
         return '---';
@@ -42,6 +43,8 @@ export default async function ApplicationDetailPage({
         notFound();
     }
 
+    const timeline = buildTimeline(app);
+
     return (
         <div>
             <header>
@@ -73,6 +76,22 @@ export default async function ApplicationDetailPage({
                     <button type="submit">Delete Application</button>
                 </form>
             </header>
+
+            <section>
+                <h2>Timeline</h2>
+                {timeline.length === 0 ? (
+                    <p>No events yet.</p>
+                ) : (
+                    <ul>
+                        {timeline.map((item) => (
+                            <li key={item.kind + item.id}>
+                                {formatDateTime(item.date)} - {item.kind}: {item.title} [{item.status}]
+                                {checkOverdue(item.date, item.status) ? ' OVERDUE' : ''}
+                            </li>
+                        ))}
+                    </ul>
+                )}
+            </section>
 
             <section>
                 <h2>Interviews</h2>

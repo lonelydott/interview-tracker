@@ -15,26 +15,31 @@ export default function AddOAForm({applicationId} : {applicationId : string}) {
             <div>
                 <label htmlFor="dueAt">Due At</label>
                 <input id="dueAt" name="dueAt" type="datetime-local" required/>
+                {state.errors?.dueAt && <p>{state.errors.dueAt[0]}</p>}
             </div>
 
             <div>
                 <label htmlFor="platform">Platform</label>
                 <input id="platform" name="platform" type="text" />
+                {state.errors?.platform && <p>{state.errors.platform[0]}</p>}
             </div>
 
             <div>
                 <label htmlFor="link">Link</label>
                 <input id="link" name="link" type="url" />
+                {state.errors?.link && <p>{state.errors.link[0]}</p>}
             </div>
 
             <div>
                 <label htmlFor="durationMins">Duration (mins)</label>
                 <input id="durationMins" name="durationMins" type="number" />
+                {state.errors?.durationMins && <p>{state.errors.durationMins[0]}</p>}
             </div>
 
             <div>
                 <label htmlFor="notes">Notes</label>
                 <textarea id="notes" name="notes" />
+                {state.errors?.notes && <p>{state.errors.notes[0]}</p>}
             </div>
 
             <div>
